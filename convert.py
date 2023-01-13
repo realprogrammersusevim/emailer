@@ -17,9 +17,24 @@ frontmatter = frontmatter.loads(source)
 metadata = frontmatter.metadata
 content = frontmatter.content
 
+# Add line breaks to markdown
+formatted = []
+lines = content.splitlines()
+for i, line in enumerate(lines):
+    if i != len(lines) - 1:
+        if line != "" and lines[i + 1] != "":
+            formatted.append(f"{line}<br>")
+        else:
+            formatted.append(line)
+    else:
+        formatted.append(line)
+
+
+formatted_md = "\n".join(formatted)
+
 # Convert Markdown to HTML
 markdowner = markdown2.Markdown()
-html_content = markdowner.convert(content)
+html_content = markdowner.convert(formatted_md)
 
 # Create email file
 msg = EmailMessage()
